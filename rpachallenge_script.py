@@ -48,10 +48,10 @@ class RpaChallengeBot:
             os.remove(path)
 
         try:
-            file = self.driver.find_element(By.XPATH, '//a[contains(text(),"Download")]')
+            file = self.driver.find_element(By.XPATH, self.DOWNLOAD_XPATH)
             file.click()
             sleep(2)
-        except Exception as e:
+        except NoSuchElementException as e:
             print(f"Error of downloading: {str(e)}")
 
     def fill_form(self):
@@ -136,10 +136,6 @@ class RpaChallengeBot:
 
 if __name__ == "__main__":
     rpa_bot = RpaChallengeBot()
-
-    try:
-        rpa_bot.open_website("https://rpachallenge.com/")
-        rpa_bot.download_file()
-        rpa_bot.fill_form()
-    except Exception as e:
-        print(f"Error: {str(e)}")
+    rpa_bot.open_website("https://rpachallenge.com/")
+    rpa_bot.download_file()
+    rpa_bot.fill_form()
