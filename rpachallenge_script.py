@@ -10,25 +10,25 @@ class RpaChallengeBot:
     """
        A class for automating the RPA Challenge bot.
     """
-    DOWNLOAD_DIRECTORY = r'C:\download'
-    DOWNLOAD_XPATH = '//a[contains(text(),"Download")]'
-    START_BUTTON_XPATH = '/html/body/app-root/div[2]/app-rpa1/div/div[1]/div[6]/button'
+    DOWNLOAD_DIRECTORY: str = r'C:\download'
+    DOWNLOAD_XPATH: str = '//a[contains(text(),"Download")]'
+    START_BUTTON_XPATH: str = '/html/body/app-root/div[2]/app-rpa1/div/div[1]/div[6]/button'
 
-    def __init__(self, directory=DOWNLOAD_DIRECTORY):
+    def __init__(self, directory: str =DOWNLOAD_DIRECTORY) -> None:
         """
                Initializes the RpaChallengeBot with the specified directory for downloading source excel-file.
                Args:
                    directory (str): The directory where downloaded files will be saved.
         """
-        self.download_directory = directory
+        self.download_directory: str = directory
         self.chrome_options = webdriver.ChromeOptions()
-        self.prefs = {
+        self.prefs: dict = {
             'download.default_directory': directory
         }
         self.chrome_options.add_experimental_option('prefs', self.prefs)
         self.driver = webdriver.Chrome(options=self.chrome_options)
 
-    def open_website(self, url):
+    def open_website(self, url: str) -> None:
         """
               Opens a website in a Chrome browser window.
 
@@ -37,8 +37,9 @@ class RpaChallengeBot:
         """
         self.driver.get(url)
         self.driver.maximize_window()
+        print(self.driver.title)
 
-    def download_file(self):
+    def download_file(self) -> None:
         """
                 Clears the download directory and downloads a file from the website.
         """
@@ -54,7 +55,7 @@ class RpaChallengeBot:
         except NoSuchElementException as e:
             print(f"Error of downloading: {str(e)}")
 
-    def fill_form(self):
+    def fill_form(self) -> None:
         """
         Fills out a form based on data from a downloaded Excel file.
         """
@@ -80,7 +81,7 @@ class RpaChallengeBot:
             print("File not found")
             self.driver.close()
 
-    def click_start_button(self):
+    def click_start_button(self) -> None:
         """
            Clicks the button START
         """
@@ -90,16 +91,18 @@ class RpaChallengeBot:
         except NoSuchElementException as e:
             print(f"Error clicking start button: {str(e)}")
 
-    def fill_out_form_fields(self, first_name, last_name, email, phone, address, role, company_name):
+    def fill_out_form_fields(self, first_name: str, last_name: str, email: str, phone: str, address: str, role: str, company_name: str)-> None:
         """
         Fills out all fields in the form. List of these fields from Excel file:
-        :param first_name: First Name
-        :param last_name: Last Name
-        :param email: Email
-        :param phone: Phone Number
-        :param address: Address
-        :param role: Role in Company
-        :param company_name: Company Name
+
+        Args
+             first_name (str): First Name
+             last_name (str): Last Name
+             email (str): Email
+             phone (str): Phone Number
+             address (str): Address
+             role (str): Role in Company
+             company_name (str): Company Name
         """
         self.fill_field('labelFirstName', first_name)
         self.fill_field('labelLastName', last_name)
@@ -109,11 +112,13 @@ class RpaChallengeBot:
         self.fill_field('labelRole', role)
         self.fill_field('labelCompanyName', company_name)
 
-    def fill_field(self, field_name, value):
+    def fill_field(self, field_name: str, value: str) -> None:
         """
         Fills out any field
-        :param field_name: name of field from the attribute ng-reflect-name in the form
-        :param value: value for filling out
+
+        Args:
+             field_name (str): name of field from the attribute ng-reflect-name in the form
+             value (str): value for filling out
         """
 
         field_xpath = f"//input[@ng-reflect-name='{field_name}']"
@@ -123,7 +128,7 @@ class RpaChallengeBot:
         except NoSuchElementException as e:
                 print(f"Error filling field '{field_name}': {str(e)}")
 
-    def submit_form(self):
+    def submit_form(self) -> None:
         """
         Submits the form
         """
